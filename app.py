@@ -8,7 +8,7 @@ ENV = 'dev'
 
 if ENV == 'dev':
     app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:mike@localhost'
 else:
     app.debug = False
     app.config['SQLALCHEMY_DATABASE_URI'] = ''
@@ -48,7 +48,7 @@ def submit():
         # print(customer, dealer, rating, comments)
         if customer == '' or dealer == '':
             return render_template('index.html', message='Please enter required fields')
-        if db.session.query(Feedback).filter(Feedback.customer == customer).count() == 0:
+        if db.session.query(Feedback).filter(Feedback.customer == customer).count() == 0: #if the customer doesn't already exist in the table
             data = Feedback(customer, dealer, rating, comments)
             db.session.add(data)
             db.session.commit()
